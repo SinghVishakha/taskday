@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="KopalTraining" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=long\beach;Initial Catalog=KopalTraining;Integrated Security=True" SettingsObjectName="taskday.Properties.Settings" SettingsPropertyName="KopalTrainingConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.BA" Member="BAs">
+    <Type Name="BA">
+      <Column Name="empId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="empName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="teamId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Team_BA" Member="Team" ThisKey="teamId" OtherKey="teamId" Type="Team" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.QA" Member="QAs">
+    <Type Name="QA">
+      <Column Name="empId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="empName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="teamId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Team_QA" Member="Team" ThisKey="teamId" OtherKey="teamId" Type="Team" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Devs" Member="Devs">
+    <Type Name="Dev">
+      <Column Name="empId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="empName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="teamId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Team_Dev" Member="Team" ThisKey="teamId" OtherKey="teamId" Type="Team" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TeamPassword" Member="TeamPasswords">
+    <Type Name="TeamPassword">
+      <Column Name="teamId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Passwd" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Team_TeamPassword" Member="Team" ThisKey="teamId" OtherKey="teamId" Type="Team" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Project" Member="Projects">
+    <Type Name="Project">
+      <Column Name="projectId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="teamId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="projectName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="startDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="endDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="report" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Team_Project" Member="Team" ThisKey="teamId" OtherKey="teamId" Type="Team" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Team" Member="Teams">
+    <Type Name="Team">
+      <Column Name="teamId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="teamName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="nextBooking" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Association Name="Team_BA" Member="BAs" ThisKey="teamId" OtherKey="teamId" Type="BA" />
+      <Association Name="Team_QA" Member="QAs" ThisKey="teamId" OtherKey="teamId" Type="QA" />
+      <Association Name="Team_Dev" Member="Devs" ThisKey="teamId" OtherKey="teamId" Type="Dev" />
+      <Association Name="Team_TeamPassword" Member="TeamPassword" ThisKey="teamId" OtherKey="teamId" Type="TeamPassword" Cardinality="One" />
+      <Association Name="Team_Project" Member="Projects" ThisKey="teamId" OtherKey="teamId" Type="Project" />
+    </Type>
+  </Table>
+  <Function Name="dbo.findCompleted" Method="findCompleted">
+    <ElementType Name="findCompletedResult">
+      <Column Name="projectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="teamId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="projectName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="startDate" Type="System.String" DbType="VarChar(5000) NOT NULL" CanBeNull="false" />
+      <Column Name="endDate" Type="System.String" DbType="VarChar(5000) NOT NULL" CanBeNull="false" />
+      <Column Name="report" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.findOngoing" Method="findOngoing">
+    <ElementType Name="findOngoingResult">
+      <Column Name="projectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="teamId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="projectName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="startDate" Type="System.String" DbType="VarChar(5000) NOT NULL" CanBeNull="false" />
+      <Column Name="endDate" Type="System.String" DbType="VarChar(5000) NOT NULL" CanBeNull="false" />
+      <Column Name="report" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.findPending" Method="findPending">
+    <ElementType Name="findPendingResult">
+      <Column Name="projectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="teamId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="projectName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="startDate" Type="System.String" DbType="VarChar(5000) NOT NULL" CanBeNull="false" />
+      <Column Name="endDate" Type="System.String" DbType="VarChar(5000) NOT NULL" CanBeNull="false" />
+      <Column Name="report" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CheckFreeTeams" Method="CheckFreeTeams">
+    <Parameter Name="ProjectName" Parameter="projectName" Type="System.String" DbType="VarChar(5000)" />
+    <Parameter Name="startDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="endDate" Type="System.DateTime" DbType="Date" />
+    <ElementType Name="CheckFreeTeamsResult">
+      <Column Name="teamId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.ViewAllTeams" Method="ViewAllTeams">
+    <ElementType Name="ViewAllTeamsResult">
+      <Column Name="teamId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="teamName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="nextBooking" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.ViewAvailableTeams" Method="ViewAvailableTeams">
+    <ElementType Name="ViewAvailableTeamsResult">
+      <Column Name="teamId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="teamName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="nextBooking" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>
